@@ -7,6 +7,8 @@ import InnerPice from '../../Component/InnerPice/InnerPice'
 import FunireFurniture from '../../Component/funireFurniture/FunireFurniture'
 import Sinup from '../Ragistation/Sinup'
 import SingalProduct from '../SingalProduct/SingalProduct'
+import Admin from '../Admin/Admin'
+import Sinin from '../Ragistation/Sinin'
 
 function Home() {
   return (
@@ -14,7 +16,9 @@ function Home() {
     <Layout>
         <HeroSection/>
         {/* <SingalProduct/> */}
-        {/* <Sinup/> */}
+         {/* <Sinup/> */}
+        {/* <Sinin/> */}
+        {/* <Admin/> */}
         <Category/>
         <HomePageProduct />
         <InnerPice/>
