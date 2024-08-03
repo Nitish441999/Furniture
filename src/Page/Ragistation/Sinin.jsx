@@ -1,7 +1,96 @@
-import React from 'react';
+import React, { useContext, useState } from 'react';
 import Layout from '../../Component/Layout/Layout';
+import myContext from '../../Context/myContext';
+import { useNavigate } from 'react-router-dom';
+import toast from 'react-hot-toast';
+import { signInWithEmailAndPassword } from 'firebase/auth';
+import { auth, fireDB } from '../../Firebase/FirebaseConfig';
+import { collection, onSnapshot, query, QuerySnapshot, where } from 'firebase/firestore';
+import Slider from "react-slick";
 
 function Sinin() {
+  // slider code
+  var settings = {
+    dots: true,
+    infinite: true,
+    autoplay: true,
+    speed: 2000,
+    autoplaySpeed: 2000,
+    // speed: 500,
+    slidesToShow: 1,
+    slidesToScroll: 1,
+    
+  }
+
+
+
+   const context = useContext(myContext);
+
+   const navigate = useNavigate()
+
+   const [userSingin, setUserSingin] = useState({
+    email:"",
+    password:""
+
+   });
+   console.log(userSingin)
+
+   const userSinginFunction = async(e) =>{
+    e.preventDefault()
+    if(userSingin.email === "" || userSingin.password === ""){
+      toast.error("All Fields are required")
+    }
+    
+    try {
+      const users = await signInWithEmailAndPassword(auth, userSingin.email, userSingin.password);
+      
+      try{
+        const q = query(
+          collection(fireDB, "user"),
+          where('uid', '==' ,users?.user?.uid)
+        );
+
+        const data = onSnapshot(q, (QuerySnapshot) =>{
+          let user;
+          QuerySnapshot.forEach((doc) =>user = doc.data());
+          const userToStore = {
+            name: user.name,
+            lastName: user.lastName,
+            role: user.role,
+            email: user.email
+          };
+
+          localStorage.setItem("users", JSON.stringify(userToStore));
+
+          
+          setUserSingin({
+            email:"",
+            password:""
+          })
+          toast.success("Login Successfully");
+          if(user.role === "user") {
+            navigate('/');
+        }else{
+            navigate('/admin');
+        }
+        })
+
+        return () => data;
+        
+      } catch(error){
+        console.log(error)
+
+      }
+      
+    } catch (error) {
+      console.log(error);
+      toast.error("Login Failed")
+    }
+
+
+   }
+
+
   return (
     <Layout>
       <section className="bg-gray-100 min-h-screen flex box-border justify-center items-center">
@@ -12,12 +101,14 @@ function Sinin() {
               If you already a member, easily log in now.
             </p>
 
-            <form action="" className="flex flex-col gap-4">
+            <form action="" className="flex flex-col gap-4" onSubmit={userSinginFunction}>
               <input
                 className="p-2 mt-8 rounded-xl border"
                 type="email"
                 name="email"
                 placeholder="Email"
+                value={userSingin.email}
+                onChange={(e) => setUserSingin({ ...userSingin, email: e.target.value })}
               />
               <div className="relative">
                 <input
@@ -26,6 +117,8 @@ function Sinin() {
                   name="password"
                   id="password"
                   placeholder="Password"
+                  value={userSingin.password}
+                onChange={(e) => setUserSingin({ ...userSingin, password: e.target.value })}
                 />
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -61,7 +154,7 @@ function Sinin() {
                 </svg>
               </div>
               <button
-                className="bg-[#002D74] text-white py-2 rounded-xl hover:scale-105 duration-300 hover:bg-[#206ab1] font-medium"
+                className="bg-[#B88E2F] text-white py-2 rounded-xl hover:scale-105 duration-300 hover:bg-[#206ab1] font-medium"
                 type="submit"
               >
                 Login
@@ -104,17 +197,33 @@ function Sinin() {
 
             <div className="mt-4 text-sm flex justify-between items-center container-mr">
               <p className="mr-3 md:mr-0">If you don't have an account..</p>
-              <button className="hover:border register text-white bg-[#002D74] hover:border-gray-400 rounded-xl py-2 px-5 hover:scale-110 hover:bg-[#002c7424] font-semibold duration-300">
+              <button className="hover:border register text-white bg-[#002D74] hover:border-gray-400 rounded-xl py-2 px-5 hover:scale-110 hover:bg-[#002c7424] font-semibold duration-300 " 
+                onClick={() => navigate('/sinup')}>
                 Register
               </button>
             </div>
           </div>
           <div className="md:block hidden w-1/2">
-            <img
-              className="rounded-2xl max-h-[1600px]"
-              src="https://images.unsplash.com/photo-1552010099-5dc86fcfaa38?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w0NzEyNjZ8MHwxfHNlYXJjaHwxfHxmcmVzaHxlbnwwfDF8fHwxNzEyMTU4MDk0fDA&ixlib=rb-4.0.3&q=80&w=1080"
-              alt="login form image"
-            />
+          <Slider {...settings} className=' overflow-hidden ' >
+                        <div className=' rounded-md'>
+                            <img className='w-full lg:h-[31rem] md:h-[27rem] bg-cover object-cover rounded-md ' src='https://i.imgur.com/W8KMYwf.png ' alt=''/>
+                        </div>
+                        <div className=' rounded-md'>
+                            <img className='w-full lg:h-[31rem] md:h-[27rem] bg-cover object-cover rounded-md' src='https://i.imgur.com/pkcOm3E.png ' alt=''/>
+                        </div>
+                        <div className=' rounded-md'>
+                            <img className='w-full lg:h-[31rem] md:h-[27rem] bg-cover object-cover rounded-md' src='https://i.imgur.com/QHrRXFp.png ' alt=''/>
+                        </div>
+                        <div className=' rounded-md'>
+                            <img className='w-full lg:h-[31rem] md:h-[27rem] bg-cover object-cover rounded-md' src='https://i.imgur.com/ejibyF8.png' alt=''/>
+                        </div>
+                        <div className=' rounded-md'>
+                            <img className='w-full lg:h-[31rem] md:h-[27rem] bg-cover object-cover rounded-md' src='https://i.imgur.com/robbzRK.png ' alt=''/>
+                        </div>
+                        <div className=' rounded-md'>
+                            <img className='w-full lg:h-[31rem] md:h-[27rem] bg-cover object-cover rounded-md' src='https://i.imgur.com/d9FIiMn.png ' alt=''/>
+                        </div>
+                    </Slider>
           </div>
         </div>
       </section>

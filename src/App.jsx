@@ -9,6 +9,15 @@ import Sinin from './Page/Ragistation/Sinin'
 import Admin from './Page/Admin/Admin'
 import Userdasbord from './Page/Userdasbord/Userdasbord'
 import Contact from './Page/Contact/Contact'
+import { Toaster } from 'react-hot-toast'
+import SingalProduct from './Page/SingalProduct/SingalProduct'
+import AddProduct from './Component/AddProduct/AddProduct'
+import { ProtectedRouteForAdmin } from './ProtectedRoute/ProtectedRouteAdmin'
+
+import UpdateProductPage from './Page/UpdateProductPage/UpdateProductPage'
+import { ProtectedRouteForUser } from './ProtectedRoute/ProtectedRouteUser'
+import CategoryPage from './Page/Category/CategoryPage'
+
 
 function App() {
   return (
@@ -20,12 +29,40 @@ function App() {
           <Route path='/sinup' element={<Sinup/>}/>
           <Route path = '/shop' element={<Shope/>}/>
           <Route path ='/cart' element = {<Cart/>}/>
-          <Route path = '/sinin' element = {<Sinin/>}/>
-          <Route path='/admin' element = {<Admin/>}/>
-          <Route path = '/userdasbord' element = {<Userdasbord/>}/>
-          <Route path='/contact' element = {<Contact/>}/>
+          <Route path = '/signin' element = {<Sinin/>}/>
+         
           
+          <Route path='/contact' element = {<Contact/>}/>
+          <Route path='/singalePage/:id' element = {<SingalProduct/>}/>
+          <Route path = '/category/:categoryname' element = {<CategoryPage/>}/>
+          
+          <Route path = '/userdashboard' element = {
+            <ProtectedRouteForUser>
+              <Userdasbord/>
+            </ProtectedRouteForUser>
+          }/>
+
+          <Route path='/addProduct' element = {
+            <ProtectedRouteForAdmin>
+              <AddProduct/>
+            </ProtectedRouteForAdmin>
+          }/>
+
+          <Route path='/admin' element = {
+            <ProtectedRouteForAdmin>
+              <Admin/>
+            </ProtectedRouteForAdmin>
+          }/>
+
+          <Route path='/updateProductPage' element = {
+            <ProtectedRouteForAdmin>
+              <UpdateProductPage/>
+            </ProtectedRouteForAdmin>
+          }/>
+
+
         </Routes>
+        <Toaster/>
       </BrowserRouter>
 
     </MyState>

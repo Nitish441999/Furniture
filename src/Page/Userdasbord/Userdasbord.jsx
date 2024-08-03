@@ -1,5 +1,6 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import Layout from '../../Component/Layout/Layout'
+import myContext from '../../Context/myContext'
 
 const products = [
     {
@@ -16,6 +17,9 @@ const products = [
 ]
 
 function Userdasbord() {
+    const context = useContext(myContext)
+    const{getAllUser} = context
+    const user = getAllUser[0];
   return (
     
         
@@ -31,8 +35,9 @@ function Userdasbord() {
                         </div>
                         {/* text  */}
                         <div className="">
-                            <h1 className=" text-center text-lg"><span className=" font-bold">Name :</span> Kamal Nayan Upadhyay</h1>
-                            <h1 className=" text-center text-lg"><span className=" font-bold">Email :</span> test@gmail.com</h1>
+                            <h1 className=" text-center text-lg"><span className=" font-bold">Name :</span> {user?.name}</h1>
+                            <h1 className=" text-center text-lg"><span className=" font-bold">Email :</span> {user?.email}</h1>
+                            <h1 className=" text-center text-lg"><span className=" font-bold">Mobile No :</span> {user?.mobile}</h1>
                         </div>
                     </div>
                 </div>

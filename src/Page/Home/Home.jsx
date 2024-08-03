@@ -5,24 +5,25 @@ import Category from '../../Component/Category/Category'
 import HomePageProduct from '../../Component/HomePageProduct/HomePageProduct'
 import InnerPice from '../../Component/InnerPice/InnerPice'
 import FunireFurniture from '../../Component/funireFurniture/FunireFurniture'
-import Sinup from '../Ragistation/Sinup'
-import SingalProduct from '../SingalProduct/SingalProduct'
-import Admin from '../Admin/Admin'
-import Sinin from '../Ragistation/Sinin'
+
+
+
 
 function Home() {
+  
+      
   return (
     <div>
     <Layout>
         <HeroSection/>
-        {/* <SingalProduct/> */}
-         {/* <Sinup/> */}
-        {/* <Sinin/> */}
-        {/* <Admin/> */}
+       
+       {/* <ClientJPS/> */}
+       
         <Category/>
         <HomePageProduct />
         <InnerPice/>
         <FunireFurniture/>
+      
     </Layout>
 
         
