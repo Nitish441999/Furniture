@@ -5,6 +5,10 @@ import AOS from "aos";
 import "aos/dist/aos.css";
 import myContext from '../../Context/myContext';
 import { useNavigate } from 'react-router-dom';
+import { useDispatch, useSelector } from "react-redux";
+import { addToCart, deleteFromCart } from "../../redux/cartSlice";
+import { toast } from 'react-toastify'; // Import toast for notifications
+import 'react-toastify/dist/ReactToastify.css'; // Import CSS for toast notifications
 
 function HomePageProduct() {
   useEffect(() => {
@@ -15,6 +19,26 @@ function HomePageProduct() {
   const { getAllProduct } = context;
   const navigate = useNavigate();
 
+  const cartItems = useSelector((state) => state.cart || []); // Ensure cartItems is an array
+  const dispatch = useDispatch();
+
+  const addCart = (item) => {
+    dispatch(addToCart(item));
+    toast.success("Added to cart");
+  };
+
+  const deleteCart = (item) => {
+    dispatch(deleteFromCart(item));
+    toast.success("Removed from cart");
+  };
+
+  useEffect(() => {
+    localStorage.setItem('cart', JSON.stringify(cartItems));
+  }, [cartItems]);
+
+  
+  
+
   return (
     <div>
       <section className='my-10'>
@@ -22,12 +46,13 @@ function HomePageProduct() {
           <h1 className='text-3xl text-center font-serif font-bold'>Our Products</h1>
         </div>
         <div className='flex flex-wrap justify-center gap-5 gap-y-10 mx-auto'>
-          {getAllProduct.map((item, index) => {
+          {getAllProduct.map((item) => {
             const { id, title, ProductImageURL1, originalPrice, discount, discountPrice } = item;
-
+            const isInCart = cartItems.some(cartItem => cartItem.id === id); // Check if the item is in the cart
+            
             return (
               <div
-                key={id} // Use `id` for the key
+                key={id}
                 className='w-[290px] max-sm:w-[320px] shadow-md shadow-gray-400 rounded-xl'
                 data-aos="zoom-in-up"
                 data-aos-duration="1700"
@@ -39,9 +64,11 @@ function HomePageProduct() {
                     src={ProductImageURL1}
                     alt={`Image of ${title}`}
                   />
-                  <span className='absolute top-3 right-3 w-10 p-2 bg-red-500 rounded-3xl text-white text-sm'>
-                    {discount}%
-                  </span>
+                  {discount && (
+                    <span className='absolute top-3 right-3 w-10 p-2 bg-red-500 rounded-3xl text-white text-sm'>
+                      {discount}%
+                    </span>
+                  )}
                 </div>
                 <div className='w-full h-40 p-3 rounded-b-xl'>
                   <div className='flex justify-between items-center'>
@@ -56,9 +83,21 @@ function HomePageProduct() {
                   </div>
                   <ul className='flex justify-between py-3'>
                     <li>
-                      <button className='cursor-pointer text-sm bg-[#B88E2F] text-white py-2 px-10 rounded-md font-bold'>
-                        Add To Cart
-                      </button>
+                      {isInCart ? 
+                        <button
+                          onClick={() => deleteCart(item)}
+                          className='cursor-pointer text-sm bg-red-500 text-white py-2 px-10 rounded-md font-bold'
+                        >
+                          Delete Cart
+                        </button>
+                      : 
+                        <button
+                          onClick={() => addCart(item)}
+                          className='cursor-pointer text-sm bg-[#B88E2F] text-white py-2 px-10 rounded-md font-bold'
+                        >
+                          Add To Cart
+                        </button>
+                      }
                     </li>
                     <li className='cursor-pointer text-3xl'>
                       <CiHeart />
@@ -70,7 +109,7 @@ function HomePageProduct() {
           })}
         </div>
         <div className='flex justify-center pt-7'>
-          <button type='button' className='py-2 px-6 border-2 border-[#B88E2F] text-[#B88E2F] rounded-lg'>
+          <button type='button' className='py-2 px-6 border-2 border-[#B88E2F] text-[#B88E2F] rounded-lg' onClick={() => navigate('/shop')}>
             Show More
           </button>
         </div>

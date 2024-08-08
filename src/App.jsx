@@ -17,12 +17,15 @@ import { ProtectedRouteForAdmin } from './ProtectedRoute/ProtectedRouteAdmin'
 import UpdateProductPage from './Page/UpdateProductPage/UpdateProductPage'
 import { ProtectedRouteForUser } from './ProtectedRoute/ProtectedRouteUser'
 import CategoryPage from './Page/Category/CategoryPage'
+import ScrollTop from './Component/ScrolTop/ScrollTop';
+
 
 
 function App() {
   return (
     <MyState>
       <BrowserRouter>
+      <ScrollTop/>
       
         <Routes> 
           <Route path='/' element={<Home />}/>
@@ -33,8 +36,9 @@ function App() {
          
           
           <Route path='/contact' element = {<Contact/>}/>
-          <Route path='/singalePage/:id' element = {<SingalProduct/>}/>
+          <Route path='/singlePage/:id' element = {<SingalProduct/>}/>
           <Route path = '/category/:categoryname' element = {<CategoryPage/>}/>
+          
           
           <Route path = '/userdashboard' element = {
             <ProtectedRouteForUser>

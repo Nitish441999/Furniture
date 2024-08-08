@@ -49,7 +49,7 @@ function Shope() {
               >
                 <div className='w-full h-72 relative bg-cover rounded-t-xl overflow-hidden'>
                   <img
-                    onClick={() => navigate(`/singlePage/${id}`)} // Corrected the route and used `id`
+                    onClick={() => navigate(`/singalePage/${id}`)} // Corrected the route and used `id`
                     className='w-full h-full object-cover rounded-t-xl hover:scale-105 duration-700 cursor-pointer'
                     src={ProductImageURL1}
                     alt={`Image of ${title}`}

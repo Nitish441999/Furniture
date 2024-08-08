@@ -57,7 +57,8 @@ function Sinin() {
             name: user.name,
             lastName: user.lastName,
             role: user.role,
-            email: user.email
+            email: user.email,
+            mobile: user.mobile
           };
 
           localStorage.setItem("users", JSON.stringify(userToStore));

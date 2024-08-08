@@ -39,7 +39,7 @@ function CategoryPage() {
                       onClick={() => navigate(`/singlePage/${id}`)}
                     />
                     <span className='absolute top-3 right-3 w-10 p-2 bg-red-500 rounded-3xl text-white text-sm'>
-                      {discount}
+                      {discount}%
                     </span>
                   </div>
                   <div className='w-full h-40 p-3 rounded-b-xl'>

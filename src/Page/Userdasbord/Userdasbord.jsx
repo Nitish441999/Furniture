@@ -17,9 +17,7 @@ const products = [
 ]
 
 function Userdasbord() {
-    const context = useContext(myContext)
-    const{getAllUser} = context
-    const user = getAllUser[0];
+    const user = JSON.parse(localStorage.getItem('users'));
   return (
     
         
